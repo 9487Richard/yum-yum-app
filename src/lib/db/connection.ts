@@ -47,14 +47,11 @@ export const dailyRevenue = pgTable('daily_revenue', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
 
-// Create connection pool
-const pool = new neon({ 
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
-})
+// Create connection - neon() expects a string, not an object
+const sql = neon(process.env.DATABASE_URL!)
 
 // Create drizzle instance with schema
-export const db = drizzle(pool, { 
+export const db = drizzle(sql, { 
   schema: { users, foods, orders, dailyRevenue } 
 })
 
