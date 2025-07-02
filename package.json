@@ -9,7 +9,9 @@
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "deploy:vercel": "vercel --prod",
     "db:seed": "tsx src/lib/db/seed.ts"
   },
   "dependencies": {
