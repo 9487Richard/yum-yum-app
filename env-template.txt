@@ -1,0 +1,13 @@
+# YUM-YUM App Environment Variables Template
+# Copy this format to your .env file and replace with your actual values
+
+# Neon Database - IMPORTANT: Must be on ONE line, no backslashes
+DATABASE_URL=postgresql://your_username:your_password@ep-xxxxx-xxxxx.us-east-1.aws.neon.tech/neondb?sslmode=require
+
+# Cloudinary Configuration - Replace with your actual credentials
+CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=123456789012345
+CLOUDINARY_API_SECRET=your_api_secret_here
+
+# Admin Authentication - Secure bcrypt hash for password "9487"
+ADMIN_PASSWORD_HASH=$2b$12$pseBQ9UN/eNtUruPf2l8zeuYxsyAUkZjDM/Sk9qC7I2yjKG3Hphcq 

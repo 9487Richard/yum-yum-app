@@ -1,103 +1,341 @@
-import Image from "next/image";
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { useDropdown } from '@/hooks/use-dropdown'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Facebook, ShoppingCart, MapPin, Clock, User, LogOut, ChevronDown, Package } from 'lucide-react'
+
+interface FoodItem {
+  id: string
+  category: string
+  name: string
+  description: string
+  image_url: string
+}
+
+interface User {
+  id: string
+  email: string
+  name: string
+  createdAt: string
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [user, setUser] = useState<User | null>(null)
+  const [menuItems, setMenuItems] = useState<{ salt: FoodItem[]; sweet: FoodItem[] }>({
+    salt: [],
+    sweet: []
+  })
+  const { isOpen, toggle, dropdownRef } = useDropdown()
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // Fetch menu items and check user authentication on component mount
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch('/api/foods')
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        
+        // Ensure we have an array of foods
+        const foods: FoodItem[] = Array.isArray(data) ? data : []
+        
+        const saltFoods = foods.filter(food => food.category === 'salt')
+        const sweetFoods = foods.filter(food => food.category === 'sweet')
+        
+        setMenuItems({ salt: saltFoods, sweet: sweetFoods })
+      } catch (error) {
+        console.error('Failed to fetch menu items:', error)
+        // Set empty arrays on error to prevent filter issues
+        setMenuItems({ salt: [], sweet: [] })
+      }
+    }
+
+    const checkUserAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me')
+        if (response.ok) {
+          const data = await response.json()
+          setUser(data.user)
+        }
+      } catch (error) {
+        console.error('Failed to check user authentication:', error)
+      }
+    }
+    
+    fetchMenuItems()
+    checkUserAuth()
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        setUser(null)
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-card">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <motion.h1 
+            className="text-2xl font-bold text-primary"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            芽 YUM-YUM
+          </motion.h1>
+          <nav className="flex gap-4 items-center">
+            <Button 
+              variant="default" 
+              size="sm"
+              onClick={() => window.location.href = '/order'}
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Order Now
+            </Button>
+            {user ? (
+              <DropdownMenu ref={dropdownRef}>
+                <DropdownMenuTrigger onClick={toggle} className="flex items-center gap-2 text-sm">
+                  <User className="h-4 w-4" />
+                  <span>Hi, {user.name}</span>
+                </DropdownMenuTrigger>
+                {isOpen && (
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => window.location.href = '/my-orders'}>
+                      <Package className="h-4 w-4 mr-2" />
+                      My Orders
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                )}
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => window.location.href = '/auth'}
+                >
+                  Login / Sign Up
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-muted-foreground"
+                  onClick={() => window.location.href = '/admin/login'}
+                >
+                  Admin
+                </Button>
+              </>
+            )}
+          </nav>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </header>
+
+      {/* Hero Section */}
+      <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/10">
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-8 text-foreground">
+              Fresh • Organic • Delicious
+            </h2>
+            
+            {/* Primary Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button 
+                size="lg" 
+                className="text-lg px-8 py-6"
+                onClick={() => window.location.href = '/order'}
+              >
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                Order Now
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-8 py-6"
+                asChild
+              >
+                <a href="https://facebook.com/yumyum" target="_blank" rel="noopener noreferrer">
+                  <Facebook className="mr-2 h-5 w-5" />
+                  Contact Us
+                </a>
+              </Button>
+            </div>
+
+            {/* Introduction Text */}
+            <div className="max-w-4xl mx-auto space-y-4 text-muted-foreground">
+              <p className="text-lg">
+                芽是植物的新芽，象徵著新生與自然的循環。
+              </p>
+              <p className="text-base">
+                "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. 
+                We aim to use fresh, organic ingredients to bring delicious food to our customers.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Menu Display */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <motion.h3 
+            className="text-3xl font-bold text-center mb-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            Our Menu
+          </motion.h3>
+
+          <Tabs defaultValue="salt" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="salt">Salt Food</TabsTrigger>
+              <TabsTrigger value="sweet">Sweet Food</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="salt">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {menuItems.salt.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="aspect-video bg-muted relative overflow-hidden">
+                        <img 
+                          src={item.image_url} 
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "/api/placeholder/300/200"
+                          }}
+                        />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="flex items-center justify-between">
+                          {item.name}
+                          <Badge variant="secondary">Salt</Badge>
+                        </CardTitle>
+                        <CardDescription>{item.description}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="sweet">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {menuItems.sweet.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="aspect-video bg-muted relative overflow-hidden">
+                        <img 
+                          src={item.image_url} 
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "/api/placeholder/300/200"
+                          }}
+                        />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="flex items-center justify-between">
+                          {item.name}
+                          <Badge variant="outline">Sweet</Badge>
+                        </CardTitle>
+                        <CardDescription>{item.description}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-muted py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <h4 className="font-bold mb-4">芽 YUM-YUM</h4>
+              <p className="text-muted-foreground">
+                Fresh, organic ingredients bringing delicious food to our customers.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#menu" className="hover:text-foreground">Menu</a></li>
+                <li>
+                  <a 
+                    href={user ? "/my-orders" : "/track"} 
+                    className="hover:text-foreground"
+                  >
+                    {user ? "My Orders" : "Track Order"}
+                  </a>
+                </li>
+                <li><a href="https://facebook.com/yumyum" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">Hours</h4>
+              <div className="text-muted-foreground">
+                <p className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  Mon-Sun: 11:00 AM - 10:00 PM
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
+            <p>&copy; 2025 YUM-YUM. All rights reserved.</p>
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
