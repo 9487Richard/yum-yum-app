@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Plus, Minus, ShoppingCart, User, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowLeft, Plus, Minus, ShoppingCart, User, Mail, MapPin, Phone, Facebook, Clock, Star, CreditCard, Truck, Store, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'

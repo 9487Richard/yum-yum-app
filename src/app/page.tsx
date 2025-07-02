@@ -4,15 +4,11 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useDropdown } from '@/hooks/use-dropdown'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Facebook, ShoppingCart, MapPin, Clock, User, LogOut, ChevronDown, Package } from 'lucide-react'
+import { Facebook, ShoppingCart, Clock, User, LogOut, Package } from 'lucide-react'
 
 interface FoodItem {
   id: string
@@ -198,7 +194,9 @@ export default function Home() {
             {/* Introduction Text */}
             <div className="max-w-4xl mx-auto space-y-4 text-muted-foreground">
               <p className="text-lg">
-                芽是植物的新芽，象徵著新生與自然的循環。
+                Welcome to 芽 YUM-YUM, where we believe in serving fresh, organic ingredients 
+                that nourish both body and soul. Our name &quot;芽&quot; (sprout) represents new beginnings, 
+                growth, and the natural cycle of life.
               </p>
               <p className="text-base">
                 "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db, orders } from '@/lib/db'
+import { db, orders } from '@/lib/db/connection'
 import { verifyAdminAuth } from '@/lib/auth'
-import { ne, sql } from 'drizzle-orm'
+import { sum } from 'drizzle-orm'
 
 // GET /api/reports/lifetime-revenue - Get total lifetime revenue (Admin only)
 export async function GET(request: NextRequest) {

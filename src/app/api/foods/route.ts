@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db, foods } from '@/lib/db/connection'
 import { verifyAdminAuth } from '@/lib/auth'
-import { eq } from 'drizzle-orm'
 import { createId } from '@paralleldrive/cuid2'
 
 // GET /api/foods - List all menu items
@@ -53,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { category, name, description, image_url, price } = body
+    const { category, name, description, image_url } = body
 
     if (!category || !name || !description) {
       return NextResponse.json(

@@ -110,7 +110,7 @@ export async function PUT(
       created_at: updatedOrder.createdAt?.toISOString(),
       updated_at: updatedOrder.updatedAt?.toISOString()
     })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Database error:', error)
     return NextResponse.json(
       { error: 'Failed to update order' },

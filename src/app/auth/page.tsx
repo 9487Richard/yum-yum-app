@@ -36,8 +36,8 @@ export default function AuthPage() {
       } else {
         setError(data.error || 'Login failed')
       }
-    } catch (error) {
-      setError('An error occurred during login')
+    } catch {
+      setError('Login failed. Please try again.')
     } finally {
       setLoading({ ...loading, login: false })
     }
@@ -89,8 +89,8 @@ export default function AuthPage() {
       } else {
         setError(data.error || 'Signup failed')
       }
-    } catch (error) {
-      setError('An error occurred during signup')
+    } catch {
+      setError('Signup failed. Please try again.')
     } finally {
       setLoading({ ...loading, signup: false })
     }

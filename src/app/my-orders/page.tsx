@@ -185,8 +185,8 @@ export default function MyOrdersPage() {
           >
             <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-2">No orders yet</h2>
-            <p className="text-muted-foreground mb-6">
-              You haven't placed any orders yet. Start exploring our delicious menu!
+            <p className="text-muted-foreground">
+              You haven&apos;t placed any orders yet. Ready to try our delicious food?
             </p>
             <Button onClick={() => router.push('/')}>
               Browse Menu

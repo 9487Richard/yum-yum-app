@@ -46,7 +46,7 @@ export default function TrackOrder() {
   const [orderId, setOrderId] = useState(searchParams.get('orderId') || '')
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
   const fetchOrder = async (id: string) => {
     if (!id.trim()) {
@@ -66,8 +66,9 @@ export default function TrackOrder() {
       }
       
       setOrder(data)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (error: unknown) {
+      console.error('Failed to fetch order:', error)
+      setError('Failed to fetch order details. Please try again.')
       setOrder(null)
     } finally {
       setLoading(false)
@@ -89,6 +90,10 @@ export default function TrackOrder() {
   }, [searchParams])
 
   const StatusIcon = order ? statusIcons[order.status as keyof typeof statusIcons] : Clock
+
+  const getStatusColor = (status: string): string => {
+    return statusColors[status as keyof typeof statusColors] || 'bg-muted text-muted-foreground'
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -167,7 +172,7 @@ export default function TrackOrder() {
                       <StatusIcon className="h-5 w-5" />
                       Order Status
                     </CardTitle>
-                    <Badge className={statusColors[order.status as keyof typeof statusColors]}>
+                    <Badge className={getStatusColor(order.status)}>
                       {order.status}
                     </Badge>
                   </div>

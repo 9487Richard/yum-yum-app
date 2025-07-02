@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
       },
       tracking_url: `/track?orderId=${insertedOrder.id}`
     }, { status: 201 })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Database error:', error)
     return NextResponse.json(
       { error: 'Failed to create order' },

@@ -39,7 +39,7 @@ export async function GET(
     }
 
     return NextResponse.json(transformedFood)
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Database error:', error)
     return NextResponse.json(
       { error: 'Failed to fetch food' },
@@ -64,7 +64,7 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const { category, name, description, image_url, price } = body
+    const { category, name, description, image_url } = body
 
     // Check if food exists
     const [existingFood] = await db.select({
@@ -92,7 +92,7 @@ export async function PUT(
     }
 
     // Update the food item (only using existing columns)
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updatedAt: new Date()
     }
     
@@ -125,7 +125,7 @@ export async function PUT(
       created_at: updatedFood.createdAt?.toISOString(),
       updated_at: updatedFood.updatedAt?.toISOString()
     })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Database error:', error)
     return NextResponse.json(
       { error: 'Failed to update food' },
@@ -172,7 +172,7 @@ export async function DELETE(
         name: foodToDelete.name
       }
     })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Database error:', error)
     return NextResponse.json(
       { error: 'Failed to delete food' },

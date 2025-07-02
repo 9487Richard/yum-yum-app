@@ -1,7 +1,7 @@
-import { drizzle } from 'drizzle-orm/neon-serverless'
-import { Pool } from '@neondatabase/serverless'
+import { drizzle } from 'drizzle-orm/neon-http'
+import { neon } from '@neondatabase/serverless'
+import * as schema from './schema'
 import { pgTable, uuid, varchar, text, timestamp, boolean, numeric, jsonb } from 'drizzle-orm/pg-core'
-import { createId } from '@paralleldrive/cuid2'
 
 // Define schema to match the ACTUAL database structure
 export const users = pgTable('users', {
@@ -48,7 +48,7 @@ export const dailyRevenue = pgTable('daily_revenue', {
 })
 
 // Create connection pool
-const pool = new Pool({ 
+const pool = new neon({ 
   connectionString: process.env.DATABASE_URL,
   ssl: true
 })

@@ -17,7 +17,7 @@ const DropdownMenuTrigger = React.forwardRef<
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     asChild?: boolean
   }
->(({ className, children, asChild = false, ...props }, ref) => {
+>(({ className, children, ...props }, ref) => {
   return (
     <button
       ref={ref}
