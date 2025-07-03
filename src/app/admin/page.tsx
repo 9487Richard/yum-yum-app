@@ -10,10 +10,11 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Plus, TrendingUp, Edit, Trash2, Save, X, Calendar, DollarSign, BarChart3, Users } from 'lucide-react'
+import { ArrowLeft, Plus, TrendingUp, Edit, Trash2, Save, X, Calendar, DollarSign, BarChart3, Users, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { CloudinaryUpload } from '@/components/ui/cloudinary-upload'
 import { LineChart } from '@/components/ui/line-chart'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
 interface FoodItem {
   id: string
@@ -372,27 +373,56 @@ function OrderManagement() {
     }
   }
 
+  const [updatingOrders, setUpdatingOrders] = useState<Set<string>>(new Set())
+
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
+    // Prevent multiple simultaneous updates for the same order
+    if (updatingOrders.has(orderId)) return
+    
+    setUpdatingOrders(prev => new Set(prev).add(orderId))
+    
     try {
       const adminPassword = sessionStorage.getItem('adminPassword')
+      
+      // Map frontend status to backend status
+      const statusMap: { [key: string]: string } = {
+        'pending': 'Pending',
+        'confirmed': 'Preparing',
+        'preparing': 'Preparing',
+        'ready': 'Out for Delivery',
+        'delivered': 'Completed',
+        'cancelled': 'Cancelled'
+      }
+      
+      const backendStatus = statusMap[newStatus] || newStatus
+      
       const response = await fetch(`/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'x-admin-password': adminPassword || ''
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status: backendStatus })
       })
 
       if (response.ok) {
         await fetchOrders()
-        alert('Order status updated successfully!')
+        // Success feedback without alert
+        console.log('Order status updated successfully!')
       } else {
-        alert('Failed to update order status')
+        const errorData = await response.json()
+        console.error('Failed to update order status:', errorData)
+        alert('Failed to update order status: ' + (errorData.error || 'Unknown error'))
       }
     } catch (error) {
       console.error('Failed to update order:', error)
       alert('Failed to update order status')
+    } finally {
+      setUpdatingOrders(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(orderId)
+        return newSet
+      })
     }
   }
 
@@ -405,12 +435,17 @@ function OrderManagement() {
   }
 
   const getStatusColor = (status: string) => {
-    switch (status) {
+    // Normalize status to lowercase for comparison
+    const normalizedStatus = status.toLowerCase()
+    
+    switch (normalizedStatus) {
       case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'confirmed': return 'bg-blue-100 text-blue-800'
-      case 'preparing': return 'bg-orange-100 text-orange-800'
-      case 'ready': return 'bg-green-100 text-green-800'
-      case 'delivered': return 'bg-gray-100 text-gray-800'
+      case 'confirmed': 
+      case 'preparing': return 'bg-blue-100 text-blue-800'
+      case 'ready': 
+      case 'out for delivery': return 'bg-green-100 text-green-800'
+      case 'delivered':
+      case 'completed': return 'bg-gray-100 text-gray-800'
       case 'cancelled': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
     }
@@ -481,19 +516,65 @@ function OrderManagement() {
                 
                 <div className="mt-4 pt-4 border-t">
                   <h4 className="font-medium mb-2">Update Status</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {['pending', 'confirmed', 'preparing', 'ready', 'delivered', 'cancelled'].map((status) => (
-                      <Button
-                        key={status}
-                        variant={order.status === status ? "default" : "outline"}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        variant="outline" 
                         size="sm"
-                        onClick={() => updateOrderStatus(order.id, status)}
-                        disabled={order.status === status}
+                        disabled={updatingOrders.has(order.id)}
+                        className="w-40 justify-between"
                       >
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                        {updatingOrders.has(order.id) ? (
+                          <>
+                            <span>Updating...</span>
+                            <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                          </>
+                        ) : (
+                          <>
+                            <span>{order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+                            <ChevronDown className="h-4 w-4" />
+                          </>
+                        )}
                       </Button>
-                    ))}
-                  </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-40">
+                      {['pending', 'confirmed', 'preparing', 'ready', 'delivered', 'cancelled'].map((status) => {
+                        const isCurrentStatus = order.status.toLowerCase() === status.toLowerCase()
+                        return (
+                          <DropdownMenuItem
+                            key={status}
+                            onClick={() => {
+                              if (!isCurrentStatus && !updatingOrders.has(order.id)) {
+                                updateOrderStatus(order.id, status)
+                              }
+                            }}
+                            className={`cursor-pointer ${
+                              isCurrentStatus ? 'bg-muted' : ''
+                            } ${
+                              isCurrentStatus || updatingOrders.has(order.id) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <div className={`w-2 h-2 rounded-full ${
+                                status === 'pending' ? 'bg-yellow-500' :
+                                status === 'confirmed' ? 'bg-blue-500' :
+                                status === 'preparing' ? 'bg-orange-500' :
+                                status === 'ready' ? 'bg-green-500' :
+                                status === 'delivered' ? 'bg-gray-500' :
+                                'bg-red-500'
+                              }`}></div>
+                              <span className={isCurrentStatus ? 'font-medium' : ''}>
+                                {status.charAt(0).toUpperCase() + status.slice(1)}
+                              </span>
+                              {isCurrentStatus && (
+                                <span className="text-xs text-muted-foreground ml-auto">Current</span>
+                              )}
+                            </div>
+                          </DropdownMenuItem>
+                        )
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </CardContent>
             </Card>
