@@ -96,28 +96,29 @@ export default function Home() {
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <motion.h1 
-            className="text-2xl font-bold text-primary"
+            className="text-xl sm:text-2xl font-bold text-primary flex-shrink-0"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
             芽 YUM-YUM
           </motion.h1>
-          <nav className="flex gap-4 items-center">
+          <nav className="flex gap-2 sm:gap-4 items-center flex-wrap">
             <Button 
               variant="default" 
               size="sm"
               onClick={() => window.location.href = '/order'}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs sm:text-sm"
             >
-              <ShoppingCart className="h-4 w-4 mr-2" />
+              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Order Now
             </Button>
             {user ? (
               <DropdownMenu ref={dropdownRef}>
-                <DropdownMenuTrigger onClick={toggle} className="flex items-center gap-2 text-sm">
-                  <User className="h-4 w-4" />
-                  <span>Hi, {user.name}</span>
+                <DropdownMenuTrigger onClick={toggle} className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                  <User className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Hi, {user.name}</span>
+                  <span className="sm:hidden">Hi, {user.name.split(' ')[0]}</span>
                 </DropdownMenuTrigger>
                 {isOpen && (
                   <DropdownMenuContent align="end">
@@ -139,13 +140,15 @@ export default function Home() {
                   variant="ghost" 
                   size="sm"
                   onClick={() => window.location.href = '/auth'}
+                  className="text-xs sm:text-sm"
                 >
-                  Login / Sign Up
+                  <span className="hidden sm:inline">Login / Sign Up</span>
+                  <span className="sm:hidden">Login</span>
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-muted-foreground"
+                  className="text-muted-foreground text-xs sm:text-sm"
                   onClick={() => window.location.href = '/admin/login'}
                 >
                   Admin
@@ -157,48 +160,48 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/10">
+      <section className="py-12 sm:py-20 bg-gradient-to-br from-primary/5 to-secondary/10">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold mb-8 text-foreground">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 sm:mb-8 text-foreground">
               Fresh • Organic • Delicious
             </h2>
             
             {/* Primary Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 px-4">
               <Button 
                 size="lg" 
-                className="text-lg px-8 py-6"
+                className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto"
                 onClick={() => window.location.href = '/order'}
               >
-                <ShoppingCart className="mr-2 h-5 w-5" />
+                <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Order Now
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-lg px-8 py-6"
+                className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto"
                 asChild
               >
-                <a href="https://facebook.com/yumyum" target="_blank" rel="noopener noreferrer">
-                  <Facebook className="mr-2 h-5 w-5" />
+                <a href="https://www.facebook.com/people/YUM-YUM-%E8%8A%BD%E8%8A%BD/61575848334127/" target="_blank" rel="noopener noreferrer">
+                  <Facebook className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Contact Us
                 </a>
               </Button>
             </div>
 
             {/* Introduction Text */}
-            <div className="max-w-4xl mx-auto space-y-4 text-muted-foreground">
-              <p className="text-lg">
+            <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 text-muted-foreground px-4">
+              <p className="text-base sm:text-lg">
                 Welcome to 芽 YUM-YUM, where we believe in serving fresh, organic ingredients 
                 that nourish both body and soul. Our name &quot;芽&quot; (sprout) represents new beginnings, 
                 growth, and the natural cycle of life.
               </p>
-              <p className="text-base">
+              <p className="text-sm sm:text-base">
                 "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. 
                 We aim to use fresh, organic ingredients to bring delicious food to our customers.
               </p>
@@ -208,10 +211,10 @@ export default function Home() {
       </section>
 
       {/* Menu Display */}
-      <section className="py-16">
+      <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
           <motion.h3 
-            className="text-3xl font-bold text-center mb-12"
+            className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
@@ -220,13 +223,13 @@ export default function Home() {
           </motion.h3>
 
           <Tabs defaultValue="salt" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="salt">Salt Food</TabsTrigger>
-              <TabsTrigger value="sweet">Sweet Food</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-6 sm:mb-8">
+              <TabsTrigger value="salt" className="text-sm sm:text-base">Salt Food</TabsTrigger>
+              <TabsTrigger value="sweet" className="text-sm sm:text-base">Sweet Food</TabsTrigger>
             </TabsList>
 
             <TabsContent value="salt">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {menuItems.salt.map((item, index) => (
                   <motion.div
                     key={item.id}
@@ -245,12 +248,12 @@ export default function Home() {
                           }}
                         />
                       </div>
-                      <CardHeader>
-                        <CardTitle className="flex items-center justify-between">
-                          {item.name}
-                          <Badge variant="secondary">Salt</Badge>
+                      <CardHeader className="p-4 sm:p-6">
+                        <CardTitle className="flex items-center justify-between text-base sm:text-lg">
+                          <span className="truncate mr-2">{item.name}</span>
+                          <Badge variant="secondary" className="text-xs flex-shrink-0">Salt</Badge>
                         </CardTitle>
-                        <CardDescription>{item.description}</CardDescription>
+                        <CardDescription className="text-sm line-clamp-2">{item.description}</CardDescription>
                       </CardHeader>
                     </Card>
                   </motion.div>
@@ -259,7 +262,7 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="sweet">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {menuItems.sweet.map((item, index) => (
                   <motion.div
                     key={item.id}
@@ -278,12 +281,12 @@ export default function Home() {
                           }}
                         />
                       </div>
-                      <CardHeader>
-                        <CardTitle className="flex items-center justify-between">
-                          {item.name}
-                          <Badge variant="outline">Sweet</Badge>
+                      <CardHeader className="p-4 sm:p-6">
+                        <CardTitle className="flex items-center justify-between text-base sm:text-lg">
+                          <span className="truncate mr-2">{item.name}</span>
+                          <Badge variant="outline" className="text-xs flex-shrink-0">Sweet</Badge>
                         </CardTitle>
-                        <CardDescription>{item.description}</CardDescription>
+                        <CardDescription className="text-sm line-clamp-2">{item.description}</CardDescription>
                       </CardHeader>
                     </Card>
                   </motion.div>
@@ -307,7 +310,6 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#menu" className="hover:text-foreground">Menu</a></li>
                 <li>
                   <a 
                     href={user ? "/my-orders" : "/track"} 
@@ -316,7 +318,7 @@ export default function Home() {
                     {user ? "My Orders" : "Track Order"}
                   </a>
                 </li>
-                <li><a href="https://facebook.com/yumyum" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Contact</a></li>
+                <li><a href="https://www.facebook.com/people/YUM-YUM-%E8%8A%BD%E8%8A%BD/61575848334127/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Contact</a></li>
               </ul>
             </div>
             <div>
