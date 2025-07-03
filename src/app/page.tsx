@@ -169,7 +169,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 sm:mb-8 text-foreground">
-              Fresh • Organic • Delicious
+              "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. We aim to use fresh, organic ingredients to bring delicious food to our customers.
             </h2>
             
             {/* Primary Action Buttons */}
