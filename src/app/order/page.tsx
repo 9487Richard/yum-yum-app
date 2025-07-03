@@ -277,7 +277,7 @@ export default function OrderPage() {
                         <img 
                           src={food.image_url} 
                           alt={food.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.src = "/api/placeholder/300/200"
@@ -339,7 +339,7 @@ export default function OrderPage() {
                         <img 
                           src={food.image_url} 
                           alt={food.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.src = "/api/placeholder/300/200"

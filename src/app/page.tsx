@@ -243,7 +243,7 @@ export default function Home() {
                         <img 
                           src={item.image_url} 
                           alt={item.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             e.currentTarget.src = "/api/placeholder/300/200"
                           }}
@@ -276,7 +276,7 @@ export default function Home() {
                         <img 
                           src={item.image_url} 
                           alt={item.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             e.currentTarget.src = "/api/placeholder/300/200"
                           }}

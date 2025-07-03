@@ -99,7 +99,7 @@ export function CloudinaryUpload({ value, onChange, disabled }: CloudinaryUpload
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
             {!uploading && (
               <Button

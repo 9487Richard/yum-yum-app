@@ -72,7 +72,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
             <Button
               type="button"
