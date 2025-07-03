@@ -276,7 +276,7 @@ function MenuManagement() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {foods.map((food) => (
           <Card key={food.id} className="overflow-hidden">
-            <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
+            <div className="bg-muted relative h-48 w-full flex items-center justify-center p-2">
               <img 
                 src={food.image_url} 
                 alt={food.name}

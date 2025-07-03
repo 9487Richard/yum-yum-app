@@ -273,7 +273,7 @@ export default function OrderPage() {
                     transition={{ duration: 0.5 }}
                   >
                     <Card className="h-full flex flex-col">
-                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
+                      <div className="bg-muted relative h-48 w-full flex items-center justify-center p-2">
                         <img 
                           src={food.image_url} 
                           alt={food.name}
@@ -335,7 +335,7 @@ export default function OrderPage() {
                     transition={{ duration: 0.5 }}
                   >
                     <Card className="h-full flex flex-col">
-                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
+                      <div className="bg-muted relative h-48 w-full flex items-center justify-center p-2">
                         <img 
                           src={food.image_url} 
                           alt={food.name}

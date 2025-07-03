@@ -95,7 +95,7 @@ export function CloudinaryUpload({ value, onChange, disabled }: CloudinaryUpload
       
       {preview ? (
         <div className="relative">
-          <div className="relative w-full bg-muted border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center min-h-[200px]">
+          <div className="relative w-full h-48 bg-muted border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center p-2">
             <img
               src={preview}
               alt="Preview"

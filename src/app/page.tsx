@@ -239,7 +239,7 @@ export default function Home() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
+                      <div className="bg-muted relative h-48 w-full flex items-center justify-center p-2">
                         <img 
                           src={item.image_url} 
                           alt={item.name}
@@ -272,7 +272,7 @@ export default function Home() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
+                      <div className="bg-muted relative h-48 w-full flex items-center justify-center p-2">
                         <img 
                           src={item.image_url} 
                           alt={item.name}
