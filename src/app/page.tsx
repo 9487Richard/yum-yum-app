@@ -194,19 +194,6 @@ export default function Home() {
                 </a>
               </Button>
             </div>
-
-            {/* Introduction Text */}
-            <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 text-muted-foreground px-4">
-              <p className="text-base sm:text-lg">
-                Welcome to 芽 YUM-YUM, where we believe in serving fresh, organic ingredients 
-                that nourish both body and soul. Our name &quot;芽&quot; (sprout) represents new beginnings, 
-                growth, and the natural cycle of life.
-              </p>
-              <p className="text-sm sm:text-base">
-                "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. 
-                We aim to use fresh, organic ingredients to bring delicious food to our customers.
-              </p>
-            </div>
           </motion.div>
         </div>
       </section>
