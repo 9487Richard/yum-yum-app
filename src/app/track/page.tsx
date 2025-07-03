@@ -254,11 +254,19 @@ export default function TrackOrder() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <Link href="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Link>
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <motion.h1 
+              className="text-xl sm:text-2xl font-bold text-primary cursor-pointer"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Link href="/" className="hover:text-primary/80">芽 YUM-YUM</Link>
+            </motion.h1>
+            <span className="text-muted-foreground text-sm">|</span>
+            <span className="text-lg font-semibold">Track Order</span>
+          </div>
         </div>
       </header>
 

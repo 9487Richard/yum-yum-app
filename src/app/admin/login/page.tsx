@@ -50,15 +50,13 @@ export default function AdminLogin() {
         transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >
-        {/* Back to Home Button */}
-        <Button 
-          variant="ghost" 
-          className="mb-6"
-          onClick={() => router.push('/')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Home
-        </Button>
+        {/* Logo Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-primary cursor-pointer" onClick={() => router.push('/')}>
+            芽 YUM-YUM
+          </h1>
+          <p className="text-muted-foreground mt-2">Restaurant Management System</p>
+        </div>
 
         <Card className="shadow-lg">
           <CardHeader className="text-center">
@@ -105,12 +103,6 @@ export default function AdminLogin() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Branding */}
-        <div className="text-center mt-8">
-          <h1 className="text-2xl font-bold text-primary">芽 YUM-YUM</h1>
-          <p className="text-muted-foreground">Restaurant Management System</p>
-        </div>
       </motion.div>
     </div>
   )

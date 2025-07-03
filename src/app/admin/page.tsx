@@ -564,12 +564,14 @@ export default function AdminPortal() {
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Admin Portal</h1>
-          <div className="flex gap-4">
-            <Link href="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
+          <div className="flex items-center gap-4">
+            <Link href="/" className="text-xl sm:text-2xl font-bold text-primary hover:text-primary/80">
+              芽 YUM-YUM
             </Link>
+            <span className="text-muted-foreground text-sm">|</span>
+            <span className="text-lg font-semibold">Admin Portal</span>
+          </div>
+          <div className="flex gap-4">
             <Button variant="outline" onClick={handleLogout}>
               Logout
             </Button>

@@ -96,10 +96,11 @@ export default function Home() {
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <motion.h1 
-            className="text-xl sm:text-2xl font-bold text-primary flex-shrink-0"
+            className="text-xl sm:text-2xl font-bold text-primary cursor-pointer"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            onClick={() => window.location.href = '/'}
           >
             芽 YUM-YUM
           </motion.h1>

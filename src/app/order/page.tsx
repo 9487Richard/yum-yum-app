@@ -227,22 +227,17 @@ export default function OrderPage() {
       <header className="border-b bg-card sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => router.push('/')}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
             <motion.h1 
-              className="text-2xl font-bold text-primary"
+              className="text-xl sm:text-2xl font-bold text-primary cursor-pointer"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
+              onClick={() => router.push('/')}
             >
-              Place Order
+              芽 YUM-YUM
             </motion.h1>
+            <span className="text-muted-foreground text-sm">|</span>
+            <span className="text-lg font-semibold">Place Order</span>
           </div>
           {cart.length > 0 && (
             <div className="flex items-center gap-2">
@@ -277,23 +272,25 @@ export default function OrderPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Card>
-                      <CardHeader>
+                    <Card className="h-full flex flex-col">
+                      <div className="aspect-video bg-muted relative overflow-hidden">
                         <img 
                           src={food.image_url} 
                           alt={food.name}
-                          className="w-full h-48 object-cover rounded-md mb-4"
+                          className="w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.src = "/api/placeholder/300/200"
                           }}
                         />
-                        <CardTitle className="text-lg">{food.name}</CardTitle>
-                        <CardDescription>{food.description}</CardDescription>
-                        <div className="flex justify-between items-center mt-4">
-                          <span className="text-2xl font-bold text-primary">${food.price}</span>
+                      </div>
+                      <CardContent className="flex-1 p-4 flex flex-col">
+                        <CardTitle className="text-lg mb-2">{food.name}</CardTitle>
+                        <CardDescription className="text-sm mb-4 flex-1">{food.description}</CardDescription>
+                        <div className="flex justify-between items-center mt-auto">
+                          <span className="text-xl font-bold text-primary">${food.price}</span>
                           {getItemQuantity(food.id) === 0 ? (
-                            <Button onClick={() => addToCart(food)}>
+                            <Button onClick={() => addToCart(food)} size="sm">
                               <Plus className="h-4 w-4 mr-2" />
                               Add to Cart
                             </Button>
@@ -319,7 +316,7 @@ export default function OrderPage() {
                             </div>
                           )}
                         </div>
-                      </CardHeader>
+                      </CardContent>
                     </Card>
                   </motion.div>
                 ))}
@@ -337,23 +334,25 @@ export default function OrderPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Card>
-                      <CardHeader>
+                    <Card className="h-full flex flex-col">
+                      <div className="aspect-video bg-muted relative overflow-hidden">
                         <img 
                           src={food.image_url} 
                           alt={food.name}
-                          className="w-full h-48 object-cover rounded-md mb-4"
+                          className="w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.src = "/api/placeholder/300/200"
                           }}
                         />
-                        <CardTitle className="text-lg">{food.name}</CardTitle>
-                        <CardDescription>{food.description}</CardDescription>
-                        <div className="flex justify-between items-center mt-4">
-                          <span className="text-2xl font-bold text-primary">${food.price}</span>
+                      </div>
+                      <CardContent className="flex-1 p-4 flex flex-col">
+                        <CardTitle className="text-lg mb-2">{food.name}</CardTitle>
+                        <CardDescription className="text-sm mb-4 flex-1">{food.description}</CardDescription>
+                        <div className="flex justify-between items-center mt-auto">
+                          <span className="text-xl font-bold text-primary">${food.price}</span>
                           {getItemQuantity(food.id) === 0 ? (
-                            <Button onClick={() => addToCart(food)}>
+                            <Button onClick={() => addToCart(food)} size="sm">
                               <Plus className="h-4 w-4 mr-2" />
                               Add to Cart
                             </Button>
@@ -379,7 +378,7 @@ export default function OrderPage() {
                             </div>
                           )}
                         </div>
-                      </CardHeader>
+                      </CardContent>
                     </Card>
                   </motion.div>
                 ))}

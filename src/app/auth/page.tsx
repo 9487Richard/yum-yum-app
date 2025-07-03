@@ -103,10 +103,10 @@ export default function AuthPage() {
       <header className="p-4">
         <Link 
           href="/" 
-          className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors"
+          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-bold text-lg"
         >
-          <ArrowLeft className="h-5 w-5" />
-          <span className="font-semibold">芽 YUM-YUM</span>
+          <ArrowLeft className="h-4 w-4" />
+          <span>芽 YUM-YUM</span>
         </Link>
       </header>
 
