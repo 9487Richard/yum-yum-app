@@ -335,13 +335,20 @@ function MenuManagement() {
   )
 }
 
+interface OrderItem {
+  food_id: string
+  name: string
+  price: number
+  quantity: number
+}
+
 interface Order {
   id: string
   customer_name: string
   customer_email: string
   delivery_address: string
   is_pickup: boolean
-  items: string[]
+  items: OrderItem[]
   special_instructions: string
   payment_method: string
   status: string
@@ -451,6 +458,36 @@ function OrderManagement() {
     }
   }
 
+  const renderOrderItems = (items: OrderItem[]) => {
+    if (!Array.isArray(items)) {
+      return <span className="text-muted-foreground">No items found</span>
+    }
+
+    return (
+      <div className="space-y-1">
+        {items.map((item, index) => {
+          if (typeof item === 'string') {
+            // Handle legacy string format
+            return <div key={index} className="text-sm">• {item}</div>
+          } else if (typeof item === 'object' && item.name) {
+            // Handle object format
+            return (
+              <div key={index} className="text-sm">
+                • {item.name} {item.quantity > 1 && `(x${item.quantity})`}
+                <span className="text-muted-foreground ml-2">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </span>
+              </div>
+            )
+          } else {
+            // Fallback for unknown format
+            return <div key={index} className="text-sm text-muted-foreground">• Unknown item</div>
+          }
+        })}
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -503,11 +540,9 @@ function OrderManagement() {
                   </div>
                   <div>
                     <h4 className="font-medium mb-2">Items</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {order.items.join(', ')}
-                    </p>
+                    {renderOrderItems(order.items)}
                     {order.special_instructions && (
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-muted-foreground mt-2">
                         📝 {order.special_instructions}
                       </p>
                     )}
@@ -517,12 +552,12 @@ function OrderManagement() {
                 <div className="mt-4 pt-4 border-t">
                   <h4 className="font-medium mb-2">Update Status</h4>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                    <DropdownMenuTrigger className="w-40 justify-between">
                       <Button 
                         variant="outline" 
                         size="sm"
                         disabled={updatingOrders.has(order.id)}
-                        className="w-40 justify-between"
+                        className="w-full justify-between"
                       >
                         {updatingOrders.has(order.id) ? (
                           <>
