@@ -169,12 +169,14 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <div className="flex justify-center mb-6 sm:mb-8">
-              <img 
-                src="/yumyum-logo.png" 
-                alt="YUM-YUM Logo"
-                className="max-w-full h-auto"
-                style={{ maxHeight: '300px' }}
-              />
+              <div className="text-center">
+                <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold text-green-600 mb-2">
+                  芽 YUMYUM 芽
+                </h1>
+                <p className="text-lg sm:text-xl text-muted-foreground">
+                  Fresh • Organic • Delicious
+                </p>
+              </div>
             </div>
             
             {/* Primary Action Buttons */}
@@ -296,11 +298,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h4 className="font-bold mb-4">芽 YUM-YUM</h4>
-              <p className="text-muted-foreground mb-3">
-                "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. We aim to use fresh, organic ingredients to bring delicious food to our customers.
-              </p>
               <p className="text-muted-foreground">
-                Fresh, organic ingredients bringing delicious food to our customers.
+                "芽" is the new sprout of a plant, symbolizing a new beginning and a new cycle in nature. We aim to use fresh, organic ingredients to bring delicious food to our customers.
               </p>
             </div>
             <div>
