@@ -276,11 +276,11 @@ function MenuManagement() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {foods.map((food) => (
           <Card key={food.id} className="overflow-hidden">
-            <div className="aspect-video bg-muted relative overflow-hidden">
+            <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
               <img 
                 src={food.image_url} 
                 alt={food.name}
-                className="w-full h-full object-contain"
+                className="max-w-full max-h-full object-contain"
                 onError={(e) => {
                   e.currentTarget.src = "/api/placeholder/300/200"
                 }}

@@ -239,11 +239,11 @@ export default function Home() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="aspect-video bg-muted relative overflow-hidden">
+                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
                         <img 
                           src={item.image_url} 
                           alt={item.name}
-                          className="w-full h-full object-contain"
+                          className="max-w-full max-h-full object-contain"
                           onError={(e) => {
                             e.currentTarget.src = "/api/placeholder/300/200"
                           }}
@@ -272,11 +272,11 @@ export default function Home() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="aspect-video bg-muted relative overflow-hidden">
+                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
                         <img 
                           src={item.image_url} 
                           alt={item.name}
-                          className="w-full h-full object-contain"
+                          className="max-w-full max-h-full object-contain"
                           onError={(e) => {
                             e.currentTarget.src = "/api/placeholder/300/200"
                           }}

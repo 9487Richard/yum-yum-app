@@ -68,11 +68,11 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
       
       {preview ? (
         <div className="relative">
-          <div className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
+          <div className="relative w-full bg-muted border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center min-h-[200px]">
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-contain"
+              className="max-w-full max-h-full object-contain"
             />
             <Button
               type="button"

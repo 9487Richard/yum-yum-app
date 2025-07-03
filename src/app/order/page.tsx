@@ -273,11 +273,11 @@ export default function OrderPage() {
                     transition={{ duration: 0.5 }}
                   >
                     <Card className="h-full flex flex-col">
-                      <div className="aspect-video bg-muted relative overflow-hidden">
+                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
                         <img 
                           src={food.image_url} 
                           alt={food.name}
-                          className="w-full h-full object-contain"
+                          className="max-w-full max-h-full object-contain"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.src = "/api/placeholder/300/200"
@@ -335,11 +335,11 @@ export default function OrderPage() {
                     transition={{ duration: 0.5 }}
                   >
                     <Card className="h-full flex flex-col">
-                      <div className="aspect-video bg-muted relative overflow-hidden">
+                      <div className="bg-muted relative min-h-[200px] flex items-center justify-center">
                         <img 
                           src={food.image_url} 
                           alt={food.name}
-                          className="w-full h-full object-contain"
+                          className="max-w-full max-h-full object-contain"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.src = "/api/placeholder/300/200"
