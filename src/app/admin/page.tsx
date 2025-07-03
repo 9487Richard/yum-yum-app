@@ -10,9 +10,10 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Plus, TrendingUp, Edit, Trash2, Save, X } from 'lucide-react'
+import { ArrowLeft, Plus, TrendingUp, Edit, Trash2, Save, X, Calendar, DollarSign, BarChart3, Users } from 'lucide-react'
 import Link from 'next/link'
 import { CloudinaryUpload } from '@/components/ui/cloudinary-upload'
+import { LineChart } from '@/components/ui/line-chart'
 
 interface FoodItem {
   id: string
@@ -503,6 +504,253 @@ function OrderManagement() {
   )
 }
 
+interface RevenueData {
+  date: string
+  amount: number
+}
+
+interface LifetimeRevenueData {
+  total_revenue: number
+  total_orders: number
+  average_order_value: number
+  revenue_by_status: { [key: string]: number }
+  calculated_at: string
+}
+
+function ReportsManagement() {
+  const [dailyRevenue, setDailyRevenue] = useState<RevenueData[]>([])
+  const [lifetimeRevenue, setLifetimeRevenue] = useState<LifetimeRevenueData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [dateRange, setDateRange] = useState({
+    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    end: new Date().toISOString().split('T')[0]
+  })
+
+  const fetchRevenueData = async () => {
+    setLoading(true)
+    try {
+      const adminPassword = sessionStorage.getItem('adminPassword')
+      
+      // Fetch daily revenue data
+      const dailyResponse = await fetch(
+        `/api/reports/daily-revenue?start=${dateRange.start}&end=${dateRange.end}`,
+        {
+          headers: {
+            'x-admin-password': adminPassword || ''
+          }
+        }
+      )
+      
+      if (dailyResponse.ok) {
+        const dailyData = await dailyResponse.json()
+        setDailyRevenue(dailyData.data || [])
+      }
+
+      // Fetch lifetime revenue data
+      const lifetimeResponse = await fetch('/api/reports/lifetime-revenue', {
+        headers: {
+          'x-admin-password': adminPassword || ''
+        }
+      })
+      
+      if (lifetimeResponse.ok) {
+        const lifetimeData = await lifetimeResponse.json()
+        setLifetimeRevenue(lifetimeData)
+      }
+    } catch (error) {
+      console.error('Failed to fetch revenue data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchRevenueData()
+  }, [dateRange])
+
+  const handleDateRangeChange = (field: 'start' | 'end', value: string) => {
+    setDateRange(prev => ({ ...prev, [field]: value }))
+  }
+
+  if (loading) {
+    return <div className="text-center py-8">Loading revenue data...</div>
+  }
+
+  const totalRevenueInRange = dailyRevenue.reduce((sum, item) => sum + item.amount, 0)
+  const averageDailyRevenue = dailyRevenue.length > 0 ? totalRevenueInRange / dailyRevenue.length : 0
+  const highestDay = dailyRevenue.reduce((max, item) => item.amount > max.amount ? item : max, { date: '', amount: 0 })
+
+  return (
+    <div className="space-y-6">
+      {/* Header with Date Range Controls */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-2xl font-bold">Revenue Reports</h2>
+        <div className="flex gap-2 items-center">
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <input
+            type="date"
+            value={dateRange.start}
+            onChange={(e) => handleDateRangeChange('start', e.target.value)}
+            className="border rounded px-2 py-1 text-sm"
+          />
+          <span className="text-muted-foreground">to</span>
+          <input
+            type="date"
+            value={dateRange.end}
+            onChange={(e) => handleDateRangeChange('end', e.target.value)}
+            className="border rounded px-2 py-1 text-sm"
+          />
+          <Button onClick={fetchRevenueData} variant="outline" size="sm">
+            Refresh
+          </Button>
+        </div>
+      </div>
+
+      {/* Lifetime Revenue Statistics */}
+      {lifetimeRevenue && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Lifetime Revenue</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">
+                ${lifetimeRevenue.total_revenue.toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                All-time earnings
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {lifetimeRevenue.total_orders}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Completed orders
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Average Order Value</CardTitle>
+              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${lifetimeRevenue.average_order_value.toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Per order average
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Period Revenue</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">
+                ${totalRevenueInRange.toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {dateRange.start} to {dateRange.end}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Daily Revenue Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Daily Revenue Trend
+          </CardTitle>
+          <CardDescription>
+            Revenue performance over the selected date range
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {dailyRevenue.length > 0 ? (
+            <div className="space-y-4">
+              <LineChart 
+                data={dailyRevenue} 
+                width={800} 
+                height={300} 
+                className="w-full"
+              />
+              
+              {/* Summary Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div className="text-center p-3 bg-muted rounded-lg">
+                  <div className="text-lg font-semibold">${averageDailyRevenue.toFixed(2)}</div>
+                  <div className="text-sm text-muted-foreground">Average Daily Revenue</div>
+                </div>
+                <div className="text-center p-3 bg-muted rounded-lg">
+                  <div className="text-lg font-semibold">${highestDay.amount.toFixed(2)}</div>
+                  <div className="text-sm text-muted-foreground">
+                    Highest Day ({new Date(highestDay.date).toLocaleDateString()})
+                  </div>
+                </div>
+                <div className="text-center p-3 bg-muted rounded-lg">
+                  <div className="text-lg font-semibold">{dailyRevenue.length}</div>
+                  <div className="text-sm text-muted-foreground">Days in Range</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">No revenue data available for the selected date range.</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Revenue by Status Breakdown */}
+      {lifetimeRevenue && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue by Order Status</CardTitle>
+            <CardDescription>
+              Breakdown of revenue by order completion status
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {Object.entries(lifetimeRevenue.revenue_by_status).map(([status, amount]) => (
+                <div key={status} className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${
+                      status === 'Completed' || status === 'delivered' ? 'bg-green-500' :
+                      status === 'Pending' ? 'bg-yellow-500' :
+                      status === 'preparing' ? 'bg-blue-500' :
+                      status === 'Cancelled' ? 'bg-red-500' : 'bg-gray-500'
+                    }`}></div>
+                    <span className="capitalize font-medium">{status}</span>
+                  </div>
+                  <span className="font-semibold">${amount.toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  )
+}
+
 export default function AdminPortal() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -592,19 +840,7 @@ export default function AdminPortal() {
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Sales Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Advanced reporting features coming soon...
-                </p>
-              </CardContent>
-            </Card>
+            <ReportsManagement />
           </TabsContent>
         </Tabs>
       </div>

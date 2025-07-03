@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db, orders } from '@/lib/db/connection'
+import { db, orders, dailyRevenue } from '@/lib/db/connection'
 import { verifyAdminAuth } from '@/lib/auth'
-import { gte, lte, and } from 'drizzle-orm'
+import { gte, lte, and, ne } from 'drizzle-orm'
 
 // GET /api/reports/daily-revenue - Get daily revenue data (Admin only)
 export async function GET(request: NextRequest) {
