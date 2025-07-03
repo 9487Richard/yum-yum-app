@@ -275,7 +275,7 @@ function MenuManagement() {
       {/* Food Items Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {foods.map((food) => (
-          <Card key={food.id} className="overflow-hidden">
+          <Card key={food.id} className="overflow-hidden flex flex-col h-full">
             <div className="bg-muted relative h-48 w-full flex items-center justify-center p-2">
               <img 
                 src={food.image_url} 
@@ -286,22 +286,18 @@ function MenuManagement() {
                 }}
               />
             </div>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <CardTitle className="flex items-center gap-2">
-                    {food.name}
-                    <Badge variant={food.category === 'salt' ? 'secondary' : 'outline'}>
-                      {food.category}
-                    </Badge>
-                  </CardTitle>
-                  <CardDescription className="mt-2">{food.description}</CardDescription>
-                  <p className="text-lg font-semibold text-green-600 mt-2">${food.price}</p>
+            <div className="flex flex-col flex-1 p-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-semibold text-lg">{food.name}</h3>
+                  <Badge variant={food.category === 'salt' ? 'secondary' : 'outline'}>
+                    {food.category}
+                  </Badge>
                 </div>
+                <p className="text-sm text-muted-foreground mb-3">{food.description}</p>
+                <p className="text-lg font-semibold text-green-600">${food.price}</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-4">
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -321,7 +317,7 @@ function MenuManagement() {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
-            </CardContent>
+            </div>
           </Card>
         ))}
       </div>
