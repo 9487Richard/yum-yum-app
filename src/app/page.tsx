@@ -219,7 +219,7 @@ export default function Home() {
 
           <Tabs defaultValue="salt" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6 sm:mb-8">
-              <TabsTrigger value="salt" className="text-sm sm:text-base">Salt Food</TabsTrigger>
+              <TabsTrigger value="salt" className="text-sm sm:text-base">Savoury Food</TabsTrigger>
               <TabsTrigger value="sweet" className="text-sm sm:text-base">Sweet Food</TabsTrigger>
             </TabsList>
 
@@ -246,7 +246,7 @@ export default function Home() {
                       <CardHeader className="p-4 sm:p-6">
                         <CardTitle className="flex items-center justify-between text-base sm:text-lg">
                           <span className="truncate mr-2">{item.name}</span>
-                          <Badge variant="secondary" className="text-xs flex-shrink-0">Salt</Badge>
+                          <Badge variant="secondary" className="text-xs flex-shrink-0">Savoury</Badge>
                         </CardTitle>
                         <CardDescription className="text-sm line-clamp-2">{item.description}</CardDescription>
                       </CardHeader>

@@ -209,7 +209,7 @@ function MenuManagement() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="salt">Salt</SelectItem>
+                      <SelectItem value="salt">Savoury</SelectItem>
                       <SelectItem value="sweet">Sweet</SelectItem>
                     </SelectContent>
                   </Select>
@@ -293,7 +293,7 @@ function MenuManagement() {
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-semibold text-lg">{food.name}</h3>
                   <Badge variant={food.category === 'salt' ? 'secondary' : 'outline'}>
-                    {food.category}
+                    {food.category === 'salt' ? 'savoury' : food.category}
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">{food.description}</p>
